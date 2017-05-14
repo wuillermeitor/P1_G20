@@ -56,7 +56,7 @@ void Player::inicio(Map * pCurrentMap) {
 	CurrentMap->modificar(posicion, symbols::PLAYER);
 }
 
-void Player::movimiento(const Input::Key & key) {
+bool Player::movimiento(const Input::Key & key) {
 	CurrentMap->modificar(posicion, symbols::EMPTY);
 	if (key != Input::Key::NONE) {
 		switch (key) {
@@ -84,10 +84,13 @@ void Player::movimiento(const Input::Key & key) {
 			break;
 		}
 	}
+	bool temp{ false };
 	if ((CurrentMap->posicion(posicion)) == symbols::COIN) {
 		score++;
+		temp = true;
 	}
 	CurrentMap->modificar(posicion, symbols::PLAYER);
+	return temp;
 }
 
 coordenadas Player::conseguirPosicion() {
@@ -98,7 +101,7 @@ bool operator==(const coordenadas & lhs, const coordenadas & rhs) {
 	return (lhs.x == rhs.x && lhs.y == rhs.y);
 }
 
-void CoinManager::inicio(Map * pCurrentMap) {
+void CoinManager::AddCoin(Map * pCurrentMap) {
 	CurrentMap = pCurrentMap;
 	ActualCoin = CurrentMap->dimensiones.x * CurrentMap->dimensiones.y * 0.01 * (min + rand() % max);
 
@@ -107,7 +110,7 @@ void CoinManager::inicio(Map * pCurrentMap) {
 		do {
 			CoinData[i] = { rand() % CurrentMap->dimensiones.x,
 				rand() % CurrentMap->dimensiones.y };
-		} while (!comprobarPosicion(CoinData[i], i));
+		} while (!comprobarPosicion(CoinData[i], i) || CurrentMap->posicion(CoinData[i]) == symbols::PLAYER);
 		CurrentMap->modificar(CoinData[i], symbols::COIN);
 	}
 }

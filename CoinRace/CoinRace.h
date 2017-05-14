@@ -36,7 +36,7 @@ private:
 class Player {
 public:
 	void inicio(Map * pCurrentMap);//método que le da una posición inicial al jugador.
-	void movimiento(const Input::Key & key);//método que permite al jugador moverse.
+	bool movimiento(const Input::Key & key);//método que permite al jugador moverse.
 	coordenadas conseguirPosicion();
 	int score;
 private:
@@ -45,11 +45,12 @@ private:
 };
 
 class CoinManager {
+	//Cantidad de monedas visibles en el mapa
 public:
-	void inicio(Map * pCurrentMap);//método que inicia la cantidad de monedas del mapa.
+	void AddCoin(Map * pCurrentMap);//método que añade la cantidad de monedas del mapa.
 	int ActualCoin;
 private:
-	const int	min = 3, max = 13;
+	const int min = 3, max = 13;
 	coordenadas*CoinData;
 	bool comprobarPosicion(const coordenadas & at, int last);//método que comprueba si en una posición ya hay una moneda.
 	Map * CurrentMap;
